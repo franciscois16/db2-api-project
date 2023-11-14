@@ -1,8 +1,8 @@
 from litestar import Controller, get, post
 from litestar.di import Provide
+
 from app.dtos import AuthorReadDTO, AuthorWriteDTO
 from app.models import Author
-
 from app.repositories import AuthorRepository, provide_authors_repo
 
 
