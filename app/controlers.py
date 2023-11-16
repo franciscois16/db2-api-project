@@ -1,6 +1,6 @@
 from litestar import Controller, get, patch, post
-from litestar.dto import DTOData
 from litestar.di import Provide
+from litestar.dto import DTOData
 
 from app.dtos import (
     AuthorReadDTO,
@@ -30,15 +30,11 @@ class AuthorController(Controller):
         return authors_repo.list()
 
     @post(dto=AuthorWriteDTO)
-    async def create_author(
-        self, data: Author, authors_repo: AuthorRepository
-    ) -> Author:
+    async def create_author(self, data: Author, authors_repo: AuthorRepository) -> Author:
         return authors_repo.add(data)
 
     @get("/{author_id:int}", return_dto=AuthorReadFullDTO)
-    async def get_author(
-        self, author_id: int, authors_repo: AuthorRepository
-    ) -> Author:
+    async def get_author(self, author_id: int, authors_repo: AuthorRepository) -> Author:
         return authors_repo.get(author_id)
 
     @patch("/{author_id:int}", dto=AuthorUpdateDTO)

@@ -1,5 +1,11 @@
+# python code
 .py[cod]
 __pycache__/
 .pdm-python
 
 .env
+.venv/
+
+# editors
+.idea/
+.vscode/
