@@ -22,5 +22,5 @@ async def provide_books_repo(db_session: Session):
 class ClientRepository(SQLAlchemySyncRepository[Client]):
     model_type = Client
 
-async def provide_clients_repo(session: Session):
-    return ClientRepository(session=session)
+async def provide_clients_repo(db_session: Session):
+    return ClientRepository(session=db_session, auto_commit=True)

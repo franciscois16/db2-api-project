@@ -117,19 +117,9 @@ class ClientController(Controller):
     async def list_clients(self, clients_repo: ClientRepository) -> list[Client]:
         return clients_repo.list()
 
-    @post(dto=ClientWriteDTO)
-    async def create_client(
-        self, data: Client, clients_repo: ClientRepository
-    ) -> Client:
+    @post(dto=ClientWriteDTO,use_default_session=True)
+    async def create_client(self, data: Client, clients_repo: ClientRepository) -> Client:
         return clients_repo.add(data)
-
-
-
-
-
-
-
-
 
 
 # class ClientController(Controller):
