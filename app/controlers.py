@@ -13,13 +13,18 @@ from app.dtos import (
     BookReadDTO,
     BookWriteDTO,
     BookUpdateDTO,
+    ClientReadDTO,
+    ClientWriteDTO,
+    
 )
-from app.models import Author, Book
+from app.models import Author, Book, Client
 from app.repositories import (
     AuthorRepository,
     BookRepository,
+    ClientRepository,
     provide_authors_repo,
     provide_books_repo,
+    provide_clients_repo,
 )
 
 
@@ -100,4 +105,47 @@ class BookController(Controller):
                 status_code=404,
                 detail="El libro no existe" 
             )
-        
+
+
+class ClientController(Controller):
+    path = "/clients"
+    tags = ["clients"]
+    return_dto = ClientReadDTO
+    dependencies = {"clients_repo": Provide(provide_clients_repo)}
+
+    @get()
+    async def list_clients(self, clients_repo: ClientRepository) -> list[Client]:
+        return clients_repo.list()
+
+    @post(dto=ClientWriteDTO)
+    async def create_client(
+        self, data: Client, clients_repo: ClientRepository
+    ) -> Client:
+        return clients_repo.add(data)
+
+
+
+
+
+
+
+
+
+
+# class ClientController(Controller):
+
+#     path = "/clients"
+#     tags = ["client"]
+#     return_dto = ClientReadDTO
+    
+#     dependencies = {
+#         "clients_repo": Provide(provide_clients_repo)
+#     }
+
+#     @get(sync_to_thread=False)
+#     def get_clients(self, clients_repo: ClientRepository) -> list[Client]:
+#         return clients_repo.get_all()
+
+#     @post(dto=ClientWriteDTO,sync_to_thread=False) 
+#     def create_client(self, client: Client, clients_repo: ClientRepository)-> Client:
+#         return clients_repo.add(client)

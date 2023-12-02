@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey,Column, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -56,3 +56,10 @@ class BookCategory(Base):
 
     book_id: Mapped[int] = mapped_column(ForeignKey("books.id"), primary_key=True)
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"), primary_key=True)
+
+class Client(Base):
+    __tablename__ = 'clients'
+    
+    id : Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[int] = mapped_column(String)
+    email: Mapped[int] = mapped_column(String)
