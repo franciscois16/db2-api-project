@@ -3,6 +3,7 @@ from litestar import Controller, get, patch, post
 from litestar.di import Provide
 from litestar.dto import DTOData
 from litestar.exceptions import HTTPException
+from sqlalchemy import or_
 
 
 from app.dtos import (
@@ -106,6 +107,22 @@ class BookController(Controller):
                 status_code=404,
                 detail="El libro no existe" 
             )
+        
+    @get("/search", return_dto=BookReadDTO)
+    async def search_books_by_title(self, title: str, books_repo: BookRepository) -> list[Book]:
+        try:
+            # Utiliza la sesión de SQLAlchemy para obtener la consulta
+            query = books_repo.session.query(Book).filter(or_(Book.title.ilike(f"%{title}%")))
+            result = query.all()
+            
+            return result
+        except Exception as e:
+            print(f"Error during book search: {e}")
+            raise HTTPException(
+                status_code=404,
+                detail="No se encontraron libros con el título proporcionado",
+            )
+
 
 
 class ClientController(Controller):
