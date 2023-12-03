@@ -15,6 +15,7 @@ from app.dtos import (
     BookUpdateDTO,
     ClientReadDTO,
     ClientWriteDTO,
+    ClientUpdateDTO
     
 )
 from app.models import Author, Book, Client
@@ -120,6 +121,32 @@ class ClientController(Controller):
     @post(dto=ClientWriteDTO,use_default_session=True)
     async def create_client(self, data: Client, clients_repo: ClientRepository) -> Client:
         return clients_repo.add(data)
+    
+    @get('/{client_id:int}', return_dto=ClientReadDTO)
+    async def get_client(self, client_id: int, clients_repo: ClientRepository) -> Client:
+
+        client = clients_repo.get(client_id)
+        return client
+    
+    @patch('/{client_id:int}', dto=ClientUpdateDTO)
+    async def update_client(
+        self, 
+        client_id: int,
+        data: DTOData[Client],
+        clients_repo: ClientRepository
+    ) -> Client:
+
+        try:
+            client = clients_repo.get(client_id)
+            client = data.update_instance(client)
+            return clients_repo.update(client)
+        except:
+            raise HTTPException(
+                status_code=404,
+                detail="El cliente no existe"
+            )
+        
+
 
 
 # class ClientController(Controller):

@@ -32,7 +32,7 @@ class BookUpdateDTO(SQLAlchemyDTO[Book]):
 
 
 class ClientReadDTO(SQLAlchemyDTO[Client]):
-    config = SQLAlchemyDTOConfig(exclude={"id"})
+    config = SQLAlchemyDTOConfig()
 
 
 class ClientReadFullDTO(SQLAlchemyDTO[Client]):
@@ -41,3 +41,6 @@ class ClientReadFullDTO(SQLAlchemyDTO[Client]):
 
 class ClientWriteDTO(SQLAlchemyDTO[Client]):
     config = SQLAlchemyDTOConfig(exclude={"id"})
+
+class ClientUpdateDTO(SQLAlchemyDTO[Client]):
+    config = SQLAlchemyDTOConfig(exclude={"id"}, partial=True)

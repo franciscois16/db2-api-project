@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date,datetime
 from typing import Optional
 
 from sqlalchemy import ForeignKey
@@ -62,3 +62,24 @@ class Client(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
+
+# models.py
+
+class BookCopy(Base):
+    __tablename__ = "book_copies"
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
+    status: Mapped[str] = mapped_column()
+
+
+class Loan(Base):
+    __tablename__ = "loans"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    book_copy_id: Mapped[int] = mapped_column(ForeignKey("book_copies.id"))
+    client_id: Mapped[int] = mapped_column(ForeignKey("Client.id"))
+    loaned_date: Mapped[datetime] = mapped_column()  
+    return_date: Mapped[datetime] = mapped_column()
+    returned_date: Mapped[datetime] = mapped_column()
+    penalty: Mapped[int] = mapped_column()
